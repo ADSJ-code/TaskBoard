@@ -1,51 +1,89 @@
-# TaskBoard - Clone do Trello
+# TaskBoard (High-Performance Trello Clone)
 
-![Prévia do Projeto TaskBoard](https://github.com/ADSJ-code/TaskBoard/blob/master/Captura%20de%20tela%202025-08-28%20004850.png?raw=true)
+**TaskBoard Preview**
 
-## 🚀 Demo no Ar
+(https://github.com/ADSJ-code/TaskBoard/blob/master/Captura%20de%20tela%202025-08-28%20004850.png?raw=true)
 
-**Acesse a versão funcional do projeto aqui:** [https://https://vercel.com/new/adsj-codes-projects/success?developer-id=&external-id=&redirect-url=&branch=master&deploymentUrl=task-board-mb8ajx9wb-adsj-codes-projects.vercel.app&projectName=task-board&s=https%3A%2F%2Fgithub.com%2FADSJ-code%2FTaskBoard&gitOrgLimit=&hasTrialAvailable=1&totalProjects=1&flow-id=12xXf7S9buwtisDO86hFm](https://vercel.com/new/adsj-codes-projects/success?developer-id=&external-id=&redirect-url=&branch=master&deploymentUrl=task-board-mb8ajx9wb-adsj-codes-projects.vercel.app&projectName=task-board&s=https%3A%2F%2Fgithub.com%2FADSJ-code%2FTaskBoard&gitOrgLimit=&hasTrialAvailable=1&totalProjects=1&flow-id=12xXf7S9buwtisDO86hFm)
+> **Live Demo:** https://task-board-flax.vercel.app/
 
----
+## 📋 Overview
 
-## 📖 Sobre o Projeto
+TaskBoard is a robust Kanban application designed to demonstrate **production-grade frontend architecture**. Unlike typical tutorials, this project focuses on performance, reproducibility, and state management.
 
-`TaskBoard` é um clone da interface principal do Trello, desenvolvido como um projeto de portfólio para demonstrar habilidades avançadas de frontend. A aplicação permite a criação e gerenciamento de tarefas em um quadro Kanban interativo. O principal destaque técnico é a implementação completa da funcionalidade de arrastar e soltar (drag-and-drop).
-
----
-
-## ✨ Funcionalidades
-
-- **Quadro Kanban Interativo:** Visualização de listas e cartões de forma organizada.
-- **Adição de Cartões:** Permite adicionar novos cartões dinamicamente a qualquer lista.
-- **Drag-and-Drop Completo:**
-    - Reordenação de cartões dentro da mesma lista.
-    - Movimentação de cartões entre listas diferentes.
-- **UI Polida:** Interface limpa, com feedback visual (rotação, sombra) ao arrastar os cartões e um design profissional com imagem de fundo.
+It implements a full Drag-and-Drop interface, **automatic internationalization (English/Portuguese)** based on the user's browser, and runs inside a highly optimized **Docker** container serving static assets via **Nginx**.
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🚀 Quick Start (Run with Docker)
 
-- **React.js** (com Vite)
-- **Chakra UI** (Para a biblioteca de componentes e estilização)
-- **@hello-pangea/dnd** (Para a funcionalidade de Drag-and-Drop, compatível com React 18+)
-- **Git & GitHub** (Para versionamento de código)
-- **Vercel** (Para o deploy)
+You do not need Node.js installed to run this project. The entire environment is containerized.
 
----
+1. **Clone the repository**
 
-## ⚙️ Como Executar o Projeto Localmente
+   ```bash
+   git clone https://github.com/ADSJ-code/TaskBoard.git
+   ```
 
-```bash
-# 1. Clone o repositório
-git clone [https://github.com/SEU_USUARIO_GITHUB_AQUI/TaskBoard.git](https://github.com/ADSJ-code/TaskBoard.git)
+   2. **Navigate to TaskBoard**
 
-# 2. Navegue para a pasta do projeto
-cd TaskBoard
+   ```bash
+   cd TaskBoard
+   ```
 
-# 3. Instale as dependências
-npm install
+  ### 2.  Run with Docker Compose
 
-# 4. Inicie o servidor de desenvolvimento
-npm run dev
+  ```bash
+  docker-compose up --build
+  ```
+### 3. Access the App Open your browser at http://localhost:3000
+
+(Alternatively, for local dev: npm install && npm run dev)
+
+### 🏗️ Architecture & Engineering Decisions
+This project was built to simulate a real-world production environment.
+
+1. Multi-Stage Docker Build
+To optimize storage and bandwidth, we use a multi-stage build strategy:
+
+Stage 1 (Builder): Uses a Node.js image to compile the React code (npm run build).
+
+Stage 2 (Runner): Uses a lightweight Nginx Alpine image (~20MB) to serve the final static files, discarding the heavy Node.js modules (~1GB).
+
+2. Nginx Optimization
+The Nginx server is configured with:
+
+Gzip Compression: Reduces payload size for faster loading over slow networks.
+
+SPA Routing Fix: Uses try_files to handle React Router history mode correctly.
+
+Cache Headers: Optimized for static asset caching.
+
+3. Automatic i18n (Internationalization)
+The application detects the browser's language (navigator.language).
+
+EN (Default): "To Do", "In Progress", "Done"
+
+PT-BR: "A Fazer", "Em Andamento", "Concluído"
+
+No external libraries were used for this to demonstrate pure Javascript logic.
+
+### ✨ Features
+Full CRUD: Create, Read, Update (Edit text), and Delete cards.
+
+Drag-and-Drop: Powered by @hello-pangea/dnd for smooth performance (React 18+ compatible).
+
+Visual Feedback: Cards rotate and cast shadows when dragged.
+
+Clean UI: Built with Chakra UI for a polished, accessible design.
+
+### 🛠️ Tech Stack
+Core: React.js (Vite)
+
+UI/UX: Chakra UI, Beautiful DnD
+
+Infrastructure: Docker, Docker Compose
+
+Web Server: Nginx (Alpine Linux)
+
+### 📝 License
+This project is for educational purposes and portfolio demonstration.
