@@ -3,9 +3,17 @@ import { Droppable } from '@hello-pangea/dnd';
 import Card from './Card';
 import AddCard from './AddCard';
 
-const List = ({ list, onAddCard }) => {
+const List = ({ list, onAddCard, onDeleteCard, onEditCard }) => {
   const handleAddCard = (text) => {
     onAddCard(list.id, text);
+  };
+
+  const handleDelete = (cardId) => {
+    onDeleteCard(list.id, cardId);
+  };
+
+  const handleEdit = (cardId, newText) => {
+    onEditCard(list.id, cardId, newText);
   };
 
   return (
@@ -30,7 +38,13 @@ const List = ({ list, onAddCard }) => {
             minH="100px"
           >
             {list.cards.map((card, index) => (
-              <Card key={card.id} card={card} index={index} />
+              <Card 
+                key={card.id} 
+                card={card} 
+                index={index} 
+                onDelete={() => handleDelete(card.id)}
+                onEdit={(newText) => handleEdit(card.id, newText)}
+              />
             ))}
             {provided.placeholder}
           </VStack>

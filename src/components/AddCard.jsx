@@ -5,8 +5,16 @@ const AddCard = ({ onAddCard }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState('');
 
+  const isPt = navigator.language.toLowerCase().startsWith('pt');
+  const t = {
+    add: isPt ? '+ Adicionar um cartão' : '+ Add a card',
+    placeholder: isPt ? 'Digite o texto para este cartão...' : 'Enter a title for this card...',
+    submit: isPt ? 'Adicionar Cartão' : 'Add Card',
+    cancel: isPt ? 'Cancelar' : 'Cancel'
+  };
+
   const handleSubmit = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (text.trim()) {
       onAddCard(text);
       setText('');
@@ -23,7 +31,7 @@ const AddCard = ({ onAddCard }) => {
         _hover={{ bg: 'gray.300' }}
         cursor="pointer"
       >
-        <Text color="gray.600">+ Adicionar um cartão</Text>
+        <Text color="gray.600">{t.add}</Text>
       </Flex>
     );
   }
@@ -33,18 +41,24 @@ const AddCard = ({ onAddCard }) => {
       <Textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="Digite o texto para este cartão..."
+        placeholder={t.placeholder}
         size="sm"
         bg="white"
         color="gray.800"
         autoFocus
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSubmit();
+          }
+        }}
       />
       <HStack mt={2}>
         <Button type="submit" colorScheme="blue" size="sm">
-          Adicionar Cartão
+          {t.submit}
         </Button>
         <Button variant="ghost" size="sm" onClick={() => setIsEditing(false)}>
-          Cancelar
+          {t.cancel}
         </Button>
       </HStack>
     </Box>

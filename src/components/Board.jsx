@@ -6,7 +6,27 @@ import List from './List';
 import backgroundImage from '../assets/background.jpg';
 
 const Board = () => {
-  const [boardData, setBoardData] = useState(initialData.board);
+  const getLocalizedData = () => {
+    const isPt = navigator.language.toLowerCase().startsWith('pt');
+    
+    const texts = {
+      pt: { title: 'Meu TaskBoard', todo: 'A Fazer', doing: 'Em Andamento', done: 'Concluído' },
+      en: { title: 'My TaskBoard', todo: 'To Do', doing: 'In Progress', done: 'Done' }
+    };
+
+    const t = isPt ? texts.pt : texts.en;
+    const data = JSON.parse(JSON.stringify(initialData.board));
+
+    data.title = t.title;
+    
+    if (data.lists.length > 0) data.lists[0].title = t.todo;
+    if (data.lists.length > 1) data.lists[1].title = t.doing;
+    if (data.lists.length > 2) data.lists[2].title = t.done;
+
+    return data;
+  };
+
+  const [boardData, setBoardData] = useState(getLocalizedData);
 
   const handleAddCard = (listId, text) => {
     const newCard = {
@@ -16,6 +36,23 @@ const Board = () => {
     const newState = { ...boardData };
     const list = newState.lists.find(list => list.id === listId);
     list.cards.push(newCard);
+    setBoardData(newState);
+  };
+
+  const handleDeleteCard = (listId, cardId) => {
+    const newState = { ...boardData };
+    const list = newState.lists.find(l => l.id === listId);
+    list.cards = list.cards.filter(c => c.id !== cardId);
+    setBoardData(newState);
+  };
+
+  const handleEditCard = (listId, cardId, newText) => {
+    const newState = { ...boardData };
+    const list = newState.lists.find(l => l.id === listId);
+    const card = list.cards.find(c => c.id === cardId);
+    if (card) {
+      card.text = newText;
+    }
     setBoardData(newState);
   };
 
@@ -97,7 +134,13 @@ const Board = () => {
             }}
           >
             {boardData.lists.map(list => (
-              <List key={list.id} list={list} onAddCard={handleAddCard} />
+              <List 
+                key={list.id} 
+                list={list} 
+                onAddCard={handleAddCard}
+                onDeleteCard={handleDeleteCard}
+                onEditCard={handleEditCard}
+              />
             ))}
           </HStack>
         </Container>
