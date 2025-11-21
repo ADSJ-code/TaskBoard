@@ -35,21 +35,23 @@ You do not need Node.js installed to run this project. The entire environment is
   ```bash
   docker-compose up --build
   ```
-### 3. Access the App Open your browser at http://localhost:3000
+### 3. Access the App Open your browser at:
+
+http://localhost:3000
 
 (Alternatively, for local dev: npm install && npm run dev)
 
 ### 🏗️ Architecture & Engineering Decisions
 This project was built to simulate a real-world production environment.
 
-1. Multi-Stage Docker Build
+1. **Multi-Stage Docker Build**
 To optimize storage and bandwidth, we use a multi-stage build strategy:
 
 Stage 1 (Builder): Uses a Node.js image to compile the React code (npm run build).
 
 Stage 2 (Runner): Uses a lightweight Nginx Alpine image (~20MB) to serve the final static files, discarding the heavy Node.js modules (~1GB).
 
-2. Nginx Optimization
+2. **Nginx Optimization**
 The Nginx server is configured with:
 
 Gzip Compression: Reduces payload size for faster loading over slow networks.
@@ -58,7 +60,7 @@ SPA Routing Fix: Uses try_files to handle React Router history mode correctly.
 
 Cache Headers: Optimized for static asset caching.
 
-3. Automatic i18n (Internationalization)
+3. **Automatic i18n (Internationalization)**
 The application detects the browser's language (navigator.language).
 
 EN (Default): "To Do", "In Progress", "Done"

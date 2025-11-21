@@ -58,6 +58,11 @@ const Card = ({ card, index, onDelete, onEdit }) => {
                   resize="none"
                   mb={2}
                   autoFocus
+                  bg="white"      // Garante fundo branco
+                  color="black"   // CORREÇÃO: Força texto preto
+                  border="1px solid"
+                  borderColor="gray.300"
+                  _focus={{ borderColor: "blue.500", boxShadow: "0 0 0 1px #3182ce" }}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
                       e.preventDefault();
